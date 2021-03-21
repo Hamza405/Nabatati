@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "335409994558",
+    "firebase_url": "https://nabtati-6386c-default-rtdb.firebaseio.com",
+    "project_id": "nabtati-6386c",
+    "storage_bucket": "nabtati-6386c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335409994558:android:753343235340b85ac46a6f",
+        "android_client_info": {
+          "package_name": "com.example.nabtati_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335409994558-3adh3299uv1t1k8p3ivpc47tggd6539e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGOk3Q8o1rHQqKKtrA3bwXVCzF7lmo4yM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335409994558-3adh3299uv1t1k8p3ivpc47tggd6539e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
