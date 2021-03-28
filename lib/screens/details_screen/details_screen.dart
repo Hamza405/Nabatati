@@ -29,8 +29,8 @@ class DetailsScreen extends StatelessWidget {
    body:SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          ImageAndIcons(size: size,id: id,keyy: keyy,index: index,fromFavoritePage: fromFavoritePage,),
-          TitleAndPrice(title: plantItem.name, description: plantItem.description),
+          ImageAndIcons(size: size,id: id,keyy: keyy,index: index,),
+          TitleAndPrice(title: plantItem.name, description: plantItem.description,id:id,keyy: keyy,),
           SizedBox(height: kDefaultPadding),
           // Row(
           //   children: <Widget>[

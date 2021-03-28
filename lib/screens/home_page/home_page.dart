@@ -18,9 +18,10 @@ class HomePage extends StatelessWidget {
             Expanded(child: 
             SingleChildScrollView(
               child: FutureBuilder(
-                future: Provider.of<PlantProvider>(context,listen: false).fetchData(),
+                future: Provider.of<PlantProvider>(context,listen: false).fetchPlants(),
 
                 builder: (ctx,data){
+                  
                   if(data.connectionState==ConnectionState.waiting){
                     return Center(child:CircularProgressIndicator());
                   }

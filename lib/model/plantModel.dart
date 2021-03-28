@@ -5,8 +5,9 @@ class PlantModel with ChangeNotifier {
    String name;
    String description;
    String imageUrl;
-   bool isFavorite;
-  PlantModel(this.name, this.description,this.imageUrl,this.isFavorite);
+   String minimal_level_humidity;
+   String category;
+  PlantModel({this.id,this.name, this.description,this.imageUrl,this.minimal_level_humidity,this.category});
   String get getId => id;
   PlantModel.fromJson(Map<dynamic,dynamic> map){
     if (map ==null) {
@@ -16,7 +17,8 @@ class PlantModel with ChangeNotifier {
     name = map['name'];
     description = map['description'];
     imageUrl = map['imageUrl'];
-    isFavorite =map['isFavorite'];
+    minimal_level_humidity =map['minimal_level_humidity'];
+    category = map['category'];
 
   }
    toJson(){
@@ -24,7 +26,8 @@ class PlantModel with ChangeNotifier {
       'name' : name,
     'description' : description,
     'imageUrl' :imageUrl,
-    'isFavorite':isFavorite
+    'minimal_level_humidity':minimal_level_humidity,
+    'category':category
     
     };
   }

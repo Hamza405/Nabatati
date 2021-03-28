@@ -10,8 +10,7 @@ class ImageAndIcons extends StatelessWidget {
   final String keyy,id;
   final Size size;
   final int index;
-  final bool fromFavoritePage;
-  ImageAndIcons({this.keyy,this.size,this.id,this.index,this.fromFavoritePage});
+  ImageAndIcons({this.keyy,this.size,this.id,this.index,});
   @override
   Widget build(BuildContext context) {
     var s=Scaffold.of(context);
@@ -68,39 +67,7 @@ class ImageAndIcons extends StatelessWidget {
                           ),
                         ),
               ),
-              Consumer<PlantProvider>(
-                    builder:(ctx,data,_)=> Padding(
-                    padding: const EdgeInsets.only(top:25),
-                    child: Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                                icon: Icon(plantItem.isFavorite?Icons.favorite:Icons.favorite_border),
-                                color: kPrimaryColor,
-                                onPressed: () async {
-                                  String text =plantItem.isFavorite?'The plant has been removed from your favorite':'The plant has been added to your favorite';
-                                  
-                                   data.toggleItemFavorite(id, plantItem.isFavorite, keyy);
-                                      s.showSnackBar(SnackBar(duration: Duration(seconds: 1),content: Text(text),backgroundColor: kPrimaryColor.withOpacity(0.5)));
-                              
-                                  if(keyy=='f')   Navigator.of(context).pop(); 
-                                   
-                                     
-                                    
-                                     
-                                 
-                                  
-                        
-                                  
-                                  
-                                },
-                              ),
-                           
-                  ),
-                ),
-              ),
+              
             ],
           ),
         ),

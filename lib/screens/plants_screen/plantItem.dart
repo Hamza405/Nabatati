@@ -26,6 +26,7 @@ class PlantItem extends StatelessWidget {
         height: 200,
         width: 200,
         child: GridTile(
+          
             child:FadeInImage(
             placeholder: AssetImage('assets/icons/loading.gif'),
             image: NetworkImage(imageUrl),

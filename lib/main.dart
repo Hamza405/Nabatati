@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:planet_app/controle_page.dart';
+import 'package:planet_app/screens/admin%20page/edit_plants.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'provider/planet_provider.dart';
+import 'screens/admin page/admin_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
           // visualDensity: VisualDensity.adaptivePlatformDensity,
 
         ),
-        home: ControllerPage(),
+        routes: {
+          'a': (ctx)=>AddPlantPage()
+        },
+        home: AdminPage(),
       ),
     );
   }
