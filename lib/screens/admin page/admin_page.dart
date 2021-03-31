@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:planet_app/provider/planet_provider.dart';
 import 'package:planet_app/screens/admin%20page/add_plant_screen.dart';
 import 'package:planet_app/screens/admin%20page/edit_plants.dart';
 import 'package:planet_app/screens/admin%20page/uploade_image_screen.dart';
+import 'package:planet_app/screens/settings_screen/compo/settings_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../controle_page.dart';
@@ -14,7 +16,23 @@ class AdminPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: AppBar(
+        // automaticallyImplyLeading: false,
+      elevation: 0,
+      // leading: IconButton(
+      //   icon: SvgPicture.asset("assets/icons/menu.svg"),
+      //   onPressed: () =>Scaffold.of(context).openDrawer()
+      // ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add_to_photos_outlined),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (ctx) => UploadImageScreen()));
+          },
+        )
+      ],
+    ),
       drawer: buildDrawer(context),
       body: Column(
         children: [
@@ -125,7 +143,7 @@ class AdminPage extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text('Hello'),
+            title: Text('Nabatati'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -137,16 +155,18 @@ class AdminPage extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.payment),
-            title: Text('Orders'),
+            leading: Icon(Icons.edit),
+            title: Text('Admin page'),
             onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => UploadImageScreen())),
+                MaterialPageRoute(builder: (ctx) => AdminPage())),
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Products'),
-            onTap: () {},
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>SettingsScreen()));
+            },
           ),
           Divider(),
         ],
@@ -157,10 +177,12 @@ class AdminPage extends StatelessWidget {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
-      // leading: IconButton(
-      //   icon: SvgPicture.asset("assets/icons/menu.svg"),
-      //   onPressed: () {},
-      // ),
+      leading: IconButton(
+        icon: SvgPicture.asset("assets/icons/menu.svg"),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+      ),
       actions: [
         IconButton(
           icon: Icon(Icons.add_a_photo_rounded),

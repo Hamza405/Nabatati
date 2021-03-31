@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../../constants.dart';
+import '../../../constants.dart';
 
-class HeaderPlants extends StatelessWidget {
-  const HeaderPlants({
-    Key key,
-    @required this.size,
-    this.keey
-  }) : super(key: key);
-
+class HeaderEditsScreens extends StatelessWidget {
+  final String nameScreen;
   final Size size;
-  final String keey;
-
+  HeaderEditsScreens(this.nameScreen,this.size);
   @override
   Widget build(BuildContext context) {
-    String name;
-    if(keey=='i'){
-      name = 'Indoor Plants';
-    } else{
-name = 'Outdoor Plants';
-    }
     return Container(
-      margin: EdgeInsets.only(bottom: kDefaultPadding),
+      // margin: EdgeInsets.only(bottom: 10),
       // It will cover 20% of our total height
       height: size.height * 0.1,
       child: Stack(
@@ -62,7 +49,7 @@ name = 'Outdoor Plants';
                 padding: const EdgeInsets.only(top:25,),
                 child: Align(
                           alignment: Alignment.topCenter,
-                          child: Text(name,style: TextStyle(color: Colors.white,fontSize:25,fontWeight: FontWeight.bold),),
+                          child: Text(nameScreen,style: TextStyle(color: Colors.white,fontSize:25,fontWeight: FontWeight.bold),),
                         ),
               ),
         ],

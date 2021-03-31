@@ -22,7 +22,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       setState(() {
         _loading = true;
       });
-      await Provider.of<PlantProvider>(context).fetchUserPlants();
+      await Provider.of<PlantProvider>(context,listen: false).fetchUserPlants();
+       if (!mounted) return;
       setState(() {
         _loading = false;
       });
@@ -34,28 +35,29 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final plantsData = Provider.of<PlantProvider>(context).fav;
+    final plantsData = Provider.of<PlantProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(right:10,left:10),
-      child:_loading?Center(child:CircularProgressIndicator()) :Column(
-            
+      child:Column(
             children: [
               HeaderFavoriteScreen(size),
-              plantsData.isEmpty?Center(child:Text('Your favorite is empty!')) : Expanded(
+              _loading?Center(child:CircularProgressIndicator()): plantsData.fav.isEmpty?Center(child:Text('Your plants list is empty!')) :
+              Expanded(
                   child: StaggeredGridView.countBuilder(
-                      itemCount: plantsData.length,
+                      itemCount: plantsData.fav.length,
                       crossAxisCount: 2,
                       mainAxisSpacing: 16,
                       crossAxisSpacing: 16,
                       staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                       itemBuilder: (ctx, index) => PlantItem(
                             size: size,
-                            name: plantsData[index].name,
-                            description: plantsData[index].description,
-                            imageUrl: plantsData[index].imageUrl,
-                            id: plantsData[index].id,
+                            name: plantsData.fav[index].name,
+                            description: plantsData.fav[index].description,
+                            imageUrl: plantsData.fav[index].imageUrl,
+                            id: plantsData.fav[index].id,
                             keey: 'f',
-                          )))
+                          ))) 
+            
             ],
          
       ),
@@ -72,3 +74,37 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 }
+
+
+// FutureBuilder(
+//                 future: plantsData.fetchUserPlants(),
+//                 builder: (context,dataSnapShot){
+//                   if(dataSnapShot.connectionState==ConnectionState.waiting){
+//                     return Center(child: CircularProgressIndicator());
+//                   }
+//                   else if(dataSnapShot.error!=null){
+// return Center(child:Text('Something wrong please try agin!'));
+//                   }
+//                   else if(plantsData.fav.isEmpty){
+//                     return Center(child:Text('Your plants list is empty!'));
+//                   }
+//                   else{
+//                     return Expanded(
+//                   child: StaggeredGridView.countBuilder(
+//                       itemCount: plantsData.fav.length,
+//                       crossAxisCount: 2,
+//                       mainAxisSpacing: 16,
+//                       crossAxisSpacing: 16,
+//                       staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+//                       itemBuilder: (ctx, index) => PlantItem(
+//                             size: size,
+//                             name: plantsData.fav[index].name,
+//                             description: plantsData.fav[index].description,
+//                             imageUrl: plantsData.fav[index].imageUrl,
+//                             id: plantsData.fav[index].id,
+//                             keey: 'f',
+//                           )));
+//                   }
+
+//                 },
+//               ),

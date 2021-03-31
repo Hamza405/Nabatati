@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:planet_app/controle_page.dart';
+import 'package:planet_app/model/plantModel.dart';
 import 'package:planet_app/screens/admin%20page/edit_plants.dart';
+import 'package:planet_app/screens/settings_screen/compo/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'provider/planet_provider.dart';
@@ -16,22 +19,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PlantProvider>(
-          create:(ctx)=> PlantProvider(),
-          child:MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: kBackgroundColor,
-          primaryColor: kPrimaryColor,
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-          // visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+          providers:[ ChangeNotifierProvider<PlantProvider>(
+            create:(ctx)=> PlantProvider(),
+          ),
+          ChangeNotifierProvider<PlantModel>(
+           create:(ctx)=> PlantModel(), 
+          )
 
+          ],
+            child:MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: kBackgroundColor,
+            primaryColor: kPrimaryColor,
+            textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+            // visualDensity: VisualDensity.adaptivePlatformDensity,
+
+          ),
+          routes: {
+            'a': (ctx)=>AddPlantPage()
+          },
+          home: ControllerPage(),
         ),
-        routes: {
-          'a': (ctx)=>AddPlantPage()
-        },
-        home: AdminPage(),
-      ),
-    );
+      );
+    
   }
 }

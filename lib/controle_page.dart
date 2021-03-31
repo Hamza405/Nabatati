@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:planet_app/screens/favorite_screen/favorite_screen.dart';
 import 'screens/admin page/admin_page.dart';
 import 'screens/home_page/home_page.dart';
+import 'screens/settings_screen/compo/settings_screen.dart';
 
 class ControllerPage extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _ControllerPageState extends State<ControllerPage> {
     return Drawer(
       child: Column(
         children: [
-          AppBar(title:Text('Hello'),automaticallyImplyLeading: false,),
+          AppBar(title:Text('Nabatati'),automaticallyImplyLeading: false,),
           Divider(),
           ListTile(
             leading: Icon(Icons.home),
@@ -43,15 +44,18 @@ class _ControllerPageState extends State<ControllerPage> {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.payment),
-            title: Text('Orders'),
-            onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>AdminPage())),
+            leading: Icon(Icons.edit),
+            title: Text('Admin page'),
+            onTap: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (ctx) => AdminPage())),
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Manage Products'),
-            onTap: () {},
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>SettingsScreen()));
+            },
           ),
           Divider(),
          

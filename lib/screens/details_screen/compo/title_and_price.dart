@@ -5,76 +5,86 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
-class TitleAndPrice extends StatelessWidget {
-  const TitleAndPrice({Key key, this.title, this.description, this.id,this.keyy})
+class TitleAndPrice extends StatefulWidget {
+  const TitleAndPrice(
+      {Key key, this.title, this.description, this.id, this.keyy})
       : super(key: key);
 
-  final String title, description, id,keyy;
-  
+  final String title, description, id, keyy;
 
   @override
+  _TitleAndPriceState createState() => _TitleAndPriceState();
+}
+
+class _TitleAndPriceState extends State<TitleAndPrice> {
+  @override
   Widget build(BuildContext context) {
-    bool _isFav =false;
-    if(keyy=='f')  _isFav = true;
-    print(keyy);
-    final plant = Provider.of<PlantProvider>(context);
-    PlantModel _userPlant = plant.findById(id);
+    bool _loading = false;
+    // if(keyy=='f')  _isFav = true;
+    print(widget.keyy);
+    final plant = Provider.of<PlantProvider>(context, listen: false);
+    PlantModel _userPlant = plant.findById(widget.id);
+    bool oldStatue = _userPlant.isFavorite;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
         children: [
           Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${title}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      .copyWith(color: kTextColor, fontWeight: FontWeight.bold),
-                ),
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(_isFav?'Remove from my plants' :
-                    'Add to my plants'
-                        ,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    if(_isFav){
-                      await plant.deleteUserPlant(id).then((value) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                            content: Text(
-                                'The plant has been removed from your plants')));
-                      });
-                      Navigator.of(context).pop();
-                      return;
-                    }
-                    
-                      await plant.addPlantToUserPlant(_userPlant).then((value) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                            content: Text(
-                                'The plant has been added to your plants')));
-                      });
-                  
-                    
-                  },
-                )
-              ],
-            ),
-        
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${widget.title}',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4
+                    .copyWith(color: kTextColor, fontWeight: FontWeight.bold),
+              ),
+              Consumer<PlantModel>(
+                builder: (ctx, dara, _) => _loading
+                    ? Center(child: CircularProgressIndicator())
+                    : FlatButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          _userPlant.isFavorite
+                              ? 'Remove from my plants'
+                              : 'Add to my plants',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () async {
+                          if (widget.keyy == 'f') {
+                            Navigator.of(context).pop();
+                            await _userPlant.toggleFavoriteStatus();
+                          if (oldStatue) {
+                              plant.deleteItemFromFavorite(widget.id);
+                            }
+                            return;
+                          }
+                          await _userPlant.toggleFavoriteStatus();
+                          if(!mounted) return;
+                          setState(() {});
+                          
+
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.5),
+                              content: Text(_userPlant.isFavorite
+                                  ? 'The plant has been added to your plants'
+                                  : 'The plant has been removed from your plants')));
+                        }),
+              )
+            ],
+          ),
           SizedBox(
             height: 24,
           ),
           Text(
-            description == null
+            widget.description == null
                 ? 'The plant dose not has a description!!!'
-                : description,
+                : widget.description,
             style: TextStyle(fontSize: 25),
           )
         ],

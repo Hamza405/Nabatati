@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:planet_app/helper/http_exception.dart';
+import 'package:http/http.dart' as http;
+import 'package:planet_app/provider/planet_provider.dart';
 
 class PlantModel with ChangeNotifier {
   String id;
@@ -7,7 +12,8 @@ class PlantModel with ChangeNotifier {
    String imageUrl;
    String minimal_level_humidity;
    String category;
-  PlantModel({this.id,this.name, this.description,this.imageUrl,this.minimal_level_humidity,this.category});
+   bool isFavorite;
+  PlantModel({this.id,this.name, this.description,this.imageUrl,this.minimal_level_humidity,this.category,this.isFavorite});
   String get getId => id;
   PlantModel.fromJson(Map<dynamic,dynamic> map){
     if (map ==null) {
@@ -27,8 +33,31 @@ class PlantModel with ChangeNotifier {
     'description' : description,
     'imageUrl' :imageUrl,
     'minimal_level_humidity':minimal_level_humidity,
-    'category':category
+    'category':category,
     
     };
+  }
+
+    Future<void> toggleFavoriteStatus() async {
+      PlantProvider p;
+    final oldStatue = isFavorite;
+    isFavorite = !isFavorite;
+    notifyListeners();
+    Uri url = Uri.parse(
+        'https://nabtati-6386c-default-rtdb.firebaseio.com/userPlants/admin/$id.json');
+    try {
+      final response = await http.put(url, body: json.encode(isFavorite));
+      
+      if (response.statusCode >= 400) {
+        isFavorite = oldStatue;
+        notifyListeners();
+
+        throw HttpException('Something wrong try agin later!');
+      }
+    } catch (e) {
+      isFavorite = oldStatue;
+      notifyListeners();
+      throw e;
+    }
   }
 }

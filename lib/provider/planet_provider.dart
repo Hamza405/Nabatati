@@ -16,12 +16,11 @@ class PlantProvider with ChangeNotifier {
 
   List<PlantModel> _indoorPlant = [];
   List<PlantModel> _outdoorPlant = [];
-  List<PlantModel> _fav = [];
+  List<PlantModel> fav = [];
   List<PlantModel> _plants = [];
 
   List<PlantModel> get indoorPlant => _indoorPlant;
   List<PlantModel> get outdoorPlant => _outdoorPlant;
-  List<PlantModel> get fav => _fav;
   List<PlantModel> get plants => _plants;
 
   PlantProvider() {
@@ -32,6 +31,12 @@ class PlantProvider with ChangeNotifier {
   //   _indoorPlant[inded]
   // }
 
+  Future<void> fetchFavorite() async{
+    plants.forEach((element) {
+
+     });
+  }
+
   Future<void> fetchPlants() async {
     Uri url = Uri.parse(
         'https://nabtati-6386c-default-rtdb.firebaseio.com/plants.json');
@@ -39,6 +44,10 @@ class PlantProvider with ChangeNotifier {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) return;
+      Uri url1 = Uri.parse(
+        'https://nabtati-6386c-default-rtdb.firebaseio.com/userPlants/admin.json');
+      final favoriteResponse = await http.get(url1);
+      final favoriteData = json.decode(favoriteResponse.body);  
       final List<PlantModel> _loadedPlants = [];
       extractedData.forEach((key, value) {
         _loadedPlants.add(PlantModel(
@@ -47,10 +56,13 @@ class PlantProvider with ChangeNotifier {
             description: value['description'],
             minimal_level_humidity: value['minimal_level_humidity'],
             category: value['category'],
-            imageUrl: value['imageUrl']));
+            imageUrl: value['imageUrl'],
+            isFavorite: favoriteData == null?false: favoriteData[key]?? false,
+          ));
       });
       List<PlantModel> _inP = [];
       List<PlantModel> _outP = [];
+      List<PlantModel> _f = [];
       _loadedPlants.forEach((element) {
         if (element.category == 'Indoor Plant') {
           _inP.add(element);
@@ -58,8 +70,14 @@ class PlantProvider with ChangeNotifier {
           _outP.add(element);
         }
       });
+      _loadedPlants.forEach((element) { 
+        if (element.isFavorite == true){
+          _f.add(element);
+        }
+       });
       _indoorPlant = _inP;
       _outdoorPlant = _outP;
+      fav=_f;
       _plants = _loadedPlants;
       notifyListeners();
     } catch (e) {
@@ -69,22 +87,35 @@ class PlantProvider with ChangeNotifier {
 
   Future<void> fetchUserPlants() async {
     Uri url = Uri.parse(
-        'https://nabtati-6386c-default-rtdb.firebaseio.com/UserPlants.json');
+        'https://nabtati-6386c-default-rtdb.firebaseio.com/plants.json');
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) return;
+      Uri url1 = Uri.parse(
+        'https://nabtati-6386c-default-rtdb.firebaseio.com/userPlants/admin.json');
+      final favoriteResponse = await http.get(url1);
+      final favoriteData = json.decode(favoriteResponse.body);  
       final List<PlantModel> _loadedPlants = [];
       extractedData.forEach((key, value) {
         _loadedPlants.add(PlantModel(
-            id: value['id'],
+            id: key,
             name: value['name'],
             description: value['description'],
             minimal_level_humidity: value['minimal_level_humidity'],
             category: value['category'],
-            imageUrl: value['imageUrl']));
+            imageUrl: value['imageUrl'],
+            isFavorite: favoriteData == null?false: favoriteData[key]?? false,
+          ));
       });
-     _fav=_loadedPlants;
+      List<PlantModel> _f = [];
+      _loadedPlants.forEach((element) { 
+        if (element.isFavorite == true){
+          _f.add(element);
+        }
+       });
+      fav=_f;
+      _plants = _loadedPlants;
       notifyListeners();
     } catch (e) {
       throw HttpException(e.toString());
@@ -161,7 +192,7 @@ class PlantProvider with ChangeNotifier {
           description: plant.description,
           minimal_level_humidity: plant.minimal_level_humidity,
           imageUrl: plant.imageUrl);
-      _fav.add(newplant);
+      fav.add(newplant);
       print('secc');
       notifyListeners();
     } catch (e) {
@@ -193,29 +224,7 @@ class PlantProvider with ChangeNotifier {
     }
   }
 
-   Future<void> deleteUserPlant(String id) async {
-    Uri url = Uri.parse(
-        'https://nabtati-6386c-default-rtdb.firebaseio.com/UserPlants/$id.json');
-    final plantIndex = _fav.indexWhere((element) => element.id == id);
-    var existingPlantIndex = _fav[plantIndex];
-    
    
-    try{
-    final resopnse = await http.delete(url);
-     _fav.removeWhere((element) => element.id == id);
-    notifyListeners();
-    if (resopnse.statusCode >= 400) {
-      _fav.insert(plantIndex, existingPlantIndex);
-      notifyListeners();
-      print(resopnse.statusCode.toString());
-      throw HttpException('could not delete product!');
-    }
-    existingPlantIndex = null;
-    }catch(e){
-      throw e;
-    }
-  }
-
   findById(String id) {
     return _plants.firstWhere((element) => element.id == id);
   }
@@ -267,6 +276,12 @@ class PlantProvider with ChangeNotifier {
   }
 
   PlantModel favoriteItemsfindById(String id) {
-    return _fav.firstWhere((element) => element.id == id);
+    return fav.firstWhere((element) => element.id == id);
   }
+
+  deleteItemFromFavorite(String id){
+    fav.removeWhere((element) => element.id==id);
+    notifyListeners();
+  }
+
 }
