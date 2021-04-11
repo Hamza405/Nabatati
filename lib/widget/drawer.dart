@@ -11,7 +11,7 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<PlantProvider>(context).isAdmin;
-     return Drawer(
+    return Drawer(
       child: Column(
         children: [
           AppBar(
@@ -26,24 +26,19 @@ class MyDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (ctx) => ControllerPage())),
           ),
           Divider(),
-          if(provider)
-          Column(
-            children: [
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Admin page'),
-                onTap: () => Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (ctx) => AdminPage())),
-              ),
-              Divider(),
-            ],
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Admin page'),
+            onTap: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (ctx) => AdminPage())),
           ),
-          
+          Divider(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>SettingsScreen()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => SettingsScreen()));
             },
           ),
           Divider(),
@@ -52,7 +47,7 @@ class MyDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () {
               Navigator.of(context).pop();
-              Provider.of<PlantProvider>(context,listen: false).logout();
+              Provider.of<PlantProvider>(context, listen: false).logout();
               Navigator.of(context).pushReplacementNamed('/');
             },
           )
