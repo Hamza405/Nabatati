@@ -30,38 +30,9 @@ class DetailsScreen extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ImageAndIcons(size: size,id: id,keyy: keyy,index: index,),
-          TitleAndPrice(title: plantItem.name, description: plantItem.description,id:id,keyy: keyy,),
+          NameAndOther(title: plantItem.name, description: plantItem.description,id:id,keyy: keyy,minimal_level_humidity:plantItem.minimal_level_humidity ,category: plantItem.category,),
           SizedBox(height: kDefaultPadding),
-          // Row(
-          //   children: <Widget>[
-          //     SizedBox(
-          //       width: size.width / 2,
-          //       height: 84,
-          //       child: FlatButton(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.only(
-          //             topRight: Radius.circular(20),
-          //           ),
-          //         ),
-          //         color: kPrimaryColor,
-          //         onPressed: () {},
-          //         child: Text(
-          //           "Buy Now",
-          //           style: TextStyle(
-          //             color: Colors.white,
-          //             fontSize: 16,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     Expanded(
-          //       child: FlatButton(
-          //         onPressed: () {},
-          //         child: Text("Description"),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          
         ],
       ),
    )

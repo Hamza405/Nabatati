@@ -5,18 +5,18 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
-class TitleAndPrice extends StatefulWidget {
-  const TitleAndPrice(
-      {Key key, this.title, this.description, this.id, this.keyy})
+class NameAndOther extends StatefulWidget {
+  const NameAndOther(
+      {Key key, this.title, this.description, this.id, this.keyy,this.minimal_level_humidity,this.category})
       : super(key: key);
 
-  final String title, description, id, keyy;
+  final String title, description, id, keyy,minimal_level_humidity,category;
 
   @override
   _TitleAndPriceState createState() => _TitleAndPriceState();
 }
 
-class _TitleAndPriceState extends State<TitleAndPrice> {
+class _TitleAndPriceState extends State<NameAndOther> {
   @override
   Widget build(BuildContext context) {
     bool _loading = false;
@@ -56,13 +56,13 @@ class _TitleAndPriceState extends State<TitleAndPrice> {
                         onPressed: () async {
                           if (widget.keyy == 'f') {
                             Navigator.of(context).pop();
-                            await _userPlant.toggleFavoriteStatus();
+                            await _userPlant.toggleFavoriteStatus(plant.token,plant.userId);
                           if (oldStatue) {
                               plant.deleteItemFromFavorite(widget.id);
                             }
                             return;
                           }
-                          await _userPlant.toggleFavoriteStatus();
+                          await _userPlant.toggleFavoriteStatus(plant.token,plant.userId);
                           if(!mounted) return;
                           setState(() {});
                           
@@ -86,7 +86,68 @@ class _TitleAndPriceState extends State<TitleAndPrice> {
                 ? 'The plant dose not has a description!!!'
                 : widget.description,
             style: TextStyle(fontSize: 25),
-          )
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              
+              Text(
+                'Type :',
+                style: TextStyle( fontSize: 25,fontWeight: FontWeight.bold),
+              ),
+              Text(
+                widget.category,
+                style: TextStyle(fontSize: 20), 
+              )
+            ],
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              
+              Text(
+                'Minimal humidity :',
+                style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),
+              ),
+              Text(
+                widget.minimal_level_humidity,
+                style: TextStyle(fontSize: 20), 
+              )
+            ],
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              
+              Text(
+                'Actually humidity :',
+                style: TextStyle( fontSize: 20,fontWeight: FontWeight.bold),
+              ),
+              Text(
+                widget.minimal_level_humidity,
+                style: TextStyle(fontSize: 20), 
+              )
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          FlatButton(
+            minWidth: 150,
+            height: 40,
+              shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+              color: Theme.of(context).primaryColor,          
+              child: Text('ٌRegalation',style: TextStyle(color: Colors.white),),
+              onPressed: (){},
+            )
+         
         ],
       ),
     );

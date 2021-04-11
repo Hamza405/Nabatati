@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:planet_app/screens/admin%20page/admin_page.dart';
+import 'package:planet_app/widget/drawer.dart';
 
 import '../../../controle_page.dart';
 import 'Settings_screen_body.dart';
@@ -11,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
      Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: buildAppBar(),
-      drawer: buildDrawer(context),
+      drawer: MyDrawer(),
       body:Column(
         children: [
           HeaderSettingsScreen(size),
@@ -20,45 +21,6 @@ class SettingsScreen extends StatelessWidget {
       )
     );
   }
-
-  
-  Drawer buildDrawer(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: [
-          AppBar(
-            title: Text('Nabatati'),
-            automaticallyImplyLeading: false,
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home Page'),
-            onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => ControllerPage())),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Admin page'),
-            onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => AdminPage())),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>SettingsScreen()));
-            },
-          ),
-          Divider(),
-        ],
-      ),
-    );
-  }
-
-
 
   AppBar buildAppBar() {
     return AppBar(

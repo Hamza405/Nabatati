@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:planet_app/provider/planet_provider.dart';
-import 'package:planet_app/screens/admin%20page/add_plant_screen.dart';
 import 'package:planet_app/screens/admin%20page/edit_plants.dart';
 import 'package:planet_app/screens/admin%20page/uploade_image_screen.dart';
 import 'package:planet_app/screens/settings_screen/compo/settings_screen.dart';
+import 'package:planet_app/widget/drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../../controle_page.dart';
@@ -33,13 +33,13 @@ class AdminPage extends StatelessWidget {
         )
       ],
     ),
-      drawer: buildDrawer(context),
+      drawer: MyDrawer(),
       body: Column(
         children: [
           HeaderAdminPage(size),
           FutureBuilder(
-            future: Provider.of<PlantProvider>(context, listen: false)
-                .fetchPlants(),
+            // future: Provider.of<PlantProvider>(context, listen: false)
+            //     .fetchPlants(),
             builder: (ctx, dataSnapShot) {
               if (dataSnapShot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -138,41 +138,6 @@ class AdminPage extends StatelessWidget {
     );
   }
 
-  Drawer buildDrawer(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: [
-          AppBar(
-            title: Text('Nabatati'),
-            automaticallyImplyLeading: false,
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home Page'),
-            onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => ControllerPage())),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Admin page'),
-            onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => AdminPage())),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx)=>SettingsScreen()));
-            },
-          ),
-          Divider(),
-        ],
-      ),
-    );
-  }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(

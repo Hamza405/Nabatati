@@ -4,10 +4,12 @@ import 'package:planet_app/controle_page.dart';
 import 'package:planet_app/model/plantModel.dart';
 import 'package:planet_app/screens/admin%20page/edit_plants.dart';
 import 'package:planet_app/screens/settings_screen/compo/settings_screen.dart';
+import 'package:planet_app/screens/splashScreen/splashScreen.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'provider/planet_provider.dart';
 import 'screens/admin page/admin_page.dart';
+import 'screens/auth screen/auth_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,20 +30,23 @@ class MyApp extends StatelessWidget {
           )
 
           ],
-            child:MaterialApp(
+            child:Consumer<PlantProvider>(
+                          builder:(ctx,auth,_)=> MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            scaffoldBackgroundColor: kBackgroundColor,
-            primaryColor: kPrimaryColor,
-            textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-            // visualDensity: VisualDensity.adaptivePlatformDensity,
+              scaffoldBackgroundColor: kBackgroundColor,
+              primaryColor: kPrimaryColor,
+              textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+              // visualDensity: VisualDensity.adaptivePlatformDensity,
 
           ),
-          routes: {
-            'a': (ctx)=>AddPlantPage()
-          },
-          home: ControllerPage(),
+          home: auth.isAuth ? ControllerPage() 
+                :FutureBuilder(
+                  future: auth.autoLogin(),
+                  builder: (ctx,dataSnapShot)=>dataSnapShot.connectionState==ConnectionState.waiting?SplashScreen():AuthScreen(),
+                ),
         ),
+            ),
       );
     
   }
