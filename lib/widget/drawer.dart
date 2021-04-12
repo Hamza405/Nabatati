@@ -10,7 +10,7 @@ import '../controle_page.dart';
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<PlantProvider>(context).isAdmin;
+    var provider = Provider.of<PlantProvider>(context,listen: false).isAdmin;
     return Drawer(
       child: Column(
         children: [
@@ -26,13 +26,19 @@ class MyDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (ctx) => ControllerPage())),
           ),
           Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Admin page'),
-            onTap: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (ctx) => AdminPage())),
+          if(provider)
+          Column(
+            children: [
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Admin page'),
+                onTap: () => Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (ctx) => AdminPage())),
+              ),
+              Divider(),
+            ],
           ),
-          Divider(),
+          
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),

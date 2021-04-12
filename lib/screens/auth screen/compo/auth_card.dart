@@ -144,6 +144,14 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
                   TextFormField(
                     enabled: _authMode == AuthMode.Signup,
                     decoration: InputDecoration(labelText: 'Name'),
+                    validator: (value) {
+                    if (value.isEmpty ) {
+                      return 'Invalid email!';
+                    }
+                    if(value.length > 20){
+                      return 'name with less than 20 characters ';
+                    }
+                  },  
                      onSaved: (value) {
                     _authData['name'] = value;
                   },

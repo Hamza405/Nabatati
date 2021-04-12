@@ -5,5 +5,6 @@ class UserModel {
   final String email;
   final String phoneNumber;
   final String password;
-  UserModel({this.userId,this.databaseId ,this.name, this.email, this.phoneNumber, this.password});
+  final bool adminRole;
+  UserModel({this.userId,this.databaseId ,this.name, this.email, this.phoneNumber, this.password,this.adminRole});
 }

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:planet_app/screens/favorite_screen/favorite_screen.dart';
 import 'package:planet_app/widget/drawer.dart';
-import 'screens/admin page/admin_page.dart';
 import 'screens/home_page/home_page.dart';
-import 'screens/settings_screen/compo/settings_screen.dart';
 
 class ControllerPage extends StatefulWidget {
   @override

@@ -16,8 +16,6 @@ class PlantProvider with ChangeNotifier {
 
   bool _isAdmin =false;
   bool get isAdmin => _isAdmin;
-  List<String> _adminsList =[];
-  List<String> get adminsList => _adminsList;
 
 
   UserModel _user;
@@ -78,6 +76,7 @@ class PlantProvider with ChangeNotifier {
               'name': name,
               'phoneNumber': phoneNumber,
               'email': email,
+              'adminRole':false
             }));
         _user = UserModel(
             userId: userId,
@@ -129,6 +128,7 @@ class PlantProvider with ChangeNotifier {
         'userId': _userId,
         '_expiryDate': _expiryDateToken.toIso8601String()
       });
+      getUserInfo();
       // _isAdmin = _adminsList.contains(email);
       prefs.setString(keyUserData, userData);
     } catch (error) {
@@ -154,6 +154,7 @@ class PlantProvider with ChangeNotifier {
     _expiryDateToken = expiryDate;
     // await getAdminUser(email);
     notifyListeners();
+    getUserInfo();
     _autoLogout();
     return true;
   }
@@ -179,19 +180,6 @@ class PlantProvider with ChangeNotifier {
     _authTimer = Timer(Duration(seconds: expiryDate), logout);
   }
 
-  Future<void> getAdminUser(String email) async {
-   
-    final Uri url =Uri.parse('https://nabtati-6386c-default-rtdb.firebaseio.com/admin.json?auth=$token');
-    final response = await http.get(url);
-    final extractedData = json.decode(response.body);
-    bool s = extractedData.values.contains((element)=>element['email']==email);
-    _isAdmin = s;
-    print(_isAdmin.toString());
-    print(email);
-    notifyListeners();
-   
-  }
-
   Future<void> getUserInfo() async {
     try{
     final Uri url = Uri.parse(
@@ -209,8 +197,10 @@ class PlantProvider with ChangeNotifier {
       userId: userId,
       name: s['name'],
       email: s['email'],
-      phoneNumber: s['phoneNumber']
+      phoneNumber: s['phoneNumber'],
+      adminRole: s['adminRole']
     );
+    if(_user.adminRole) _isAdmin=true;
     }catch(e){
       throw e;
     }

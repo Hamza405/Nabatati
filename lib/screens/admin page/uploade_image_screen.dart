@@ -25,7 +25,7 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
     return Scaffold(
       body: Column(
         children: [
-          HeaderEditsScreens('Uploade Image', size),
+          HeaderEditsScreens('Upload Image', size),
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 16, right: 16),
             child: Column(
